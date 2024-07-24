@@ -7,7 +7,7 @@ const app = express();
 const port = process.env.PORT || 8000;
 
 app.use(cors({
-  origin: 'http://localhost:3000',
+  origin: '*',
   credentials: true,
   methods: '*',
   allowedHeaders: '*'
@@ -16,10 +16,15 @@ app.use(express.json());
 const openai = new OpenAI({
     apiKey: process.env.apiKey,
   });
+ 
 
 const assistant_id = process.env.assistant_id;
 const run_finished_states = ['completed', 'failed', 'cancelled', 'expired', 'requires_action'];
 
+app.get('/', (req, res) => {
+    res.send('Hello World!');
+  });
+  
 app.post('/api/new', async (req, res) => {
   try {
     const thread = await openai.beta.threads.create();
